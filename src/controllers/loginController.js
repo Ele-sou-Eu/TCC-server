@@ -1,27 +1,34 @@
 import database from "../database/index.js"
-import bcrypt from "bcrypt"
+import bcrypt, { hash } from "bcrypt"
+import jwt from "jsonwebtoken"
 
 class LoginController{
-    async show(request, response){
-        const {matricula, senha} = request.query
+    async store(request, response){
+        const {matricula, senha} = request.body
         try{
             const data = await database("matricula").where("matricula", "=", matricula).first()
-            console.log(data)
-            if(data === null){
-                response.json("não existe matrícula")
+
+            if(!data){
+                response.status(404).json("não existe matrícula")
                 return
             }
             const senha_verdadeira = await bcrypt.compare(senha, data.senha)
             if(!senha_verdadeira){
-                response.json("senha incorreta")
+                response.status(401).json("senha incorreta")
                 return
             }
+            const token = jwt.sign({
+                id: data.id
+            },
+            process.env.SECRET,
+            {
+                expiresIn: 900
+            })
+            response.json(token)
         }catch(error){
             console.log(error)
-            response.json("erro do servidor")
+            response.status(400).json("erro do servidor")
         }
-        // response.json(data)
-        response.json(true)
     }
 }
 
