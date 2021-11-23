@@ -22,7 +22,7 @@ class LoginController{
             },
             process.env.SECRET,
             {
-                expiresIn: 900
+                expiresIn: 300
             })
             response.json(token)
         }catch(error){

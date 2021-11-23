@@ -6,7 +6,6 @@ function verifyJWT(request, response, next){
         return response.status(404).json('Token não enviado.')
     }
     jwt.verify(token, process.env.SECRET, function(error, decoded){
-        console.log(error)
         if(error){
             return response.status(401).json('Token Inválido.')
         }
