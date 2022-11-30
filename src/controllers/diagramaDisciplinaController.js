@@ -41,9 +41,9 @@ class DiagramaDisciplinaController{
                         return true
                     }
                     return false
-                }).map(preRequisito => {
+                }).map((preRequisito, key) => {
                     return {
-                        from: preRequisito.nome, to: disciplina.nome
+                        from: preRequisito.nome, to: disciplina.nome, fromEndSegmentLength: 25 - key, toEndSegmentLength: 0
                     }
                 })]
             });
