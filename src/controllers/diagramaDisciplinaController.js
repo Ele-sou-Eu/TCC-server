@@ -17,7 +17,7 @@ class DiagramaDisciplinaController{
             .where('matricula.id', request.userID)
 
             const desempenho = await database.select('desempenho.*').table("desempenho")
-            .join('matricula', 'desempenho.matricula', 'matricula.matricula')
+            .join('matricula', 'desempenho.codigo_matricula', 'matricula.matricula')
             .where('matricula.id', request.userID)
 
             let ligacoesDisciplinas = []
